@@ -1,0 +1,287 @@
+{
+  "meta": {
+    "version": "0.1",
+    "purpose": "Starting library of hypotheses, verification checks, corrective actions and improvement ideas per SEU type. Items are HYPOTHESES to verify on site (ISO 50002-style measurement/inspection), not diagnoses. Edit and extend with your plant's own history (past audit findings, MOCs, maintenance records).",
+    "how_used": "The notebook picks entries by seu_type + detected deviation pattern (drift | step | spike | persistent_high) and by improvement triggers (high_baseload | weather_sensitive | bdp_gap | always)."
+  },
+  "generic": {
+    "drift": {
+      "likely_causes": ["Progressive fouling, wear or loss of efficiency of the equipment", "Control setpoints creeping or valves left partly open/bypassed", "Instrument drift or changed operating practice"],
+      "verify": ["Compare current operating point against design/test data at equal load", "Review maintenance and operating logs since the drift started", "Check calibration of the energy and process meters"],
+      "corrective": ["Inspect and clean/restore the equipment at the next opportunity", "Restore setpoints and valve line-ups to the reference", "Add the SEU's deviation trend to the monthly review"]
+    },
+    "step": {
+      "likely_causes": ["Change in equipment line-up, setpoint, product/grade or operating mode", "Equipment fault or bypass started at the step date", "Change in metering or data source"],
+      "verify": ["Identify what changed on the step date (MOC, shift log, maintenance order)", "Confirm the meter and data source did not change"],
+      "corrective": ["Reverse the change if it was unintended", "If intended, document its energy impact and re-assess the baseline per procedure"]
+    },
+    "spike": {
+      "likely_causes": ["One-off operating event (start-up, trial, upset, flushing)", "Temporary extra equipment running"],
+      "verify": ["Check the events log and shift reports for the spike month"],
+      "corrective": ["Record the cause in the events log; no equipment action unless it repeats"]
+    },
+    "improvements": {
+      "high_baseload": ["A large share of this energy does not depend on production: identify idle/standby running and turndown options (ISO 50002 audit measurement at low load)"],
+      "weather_sensitive": ["Energy depends on ambient temperature: review setpoints, heat-rejection performance and cleaning schedule"],
+      "bdp_gap": ["Best demonstrated performance is better than typical: study what operating practice was used in the best months and standardize it"],
+      "always": ["Install or confirm sub-metering with a monthly data check", "Set an alarm limit on the deviation so drift is caught early"]
+    }
+  },
+  "types": {
+    "pump": {
+      "label": "Pumps (incl. slurry circulation)",
+      "typical_drivers": ["flow/head demand", "fluid density and solids loading", "throttling / recycle"],
+      "drift": {
+        "likely_causes": ["Impeller wear or increased internal clearance lowering efficiency", "Strainer, filter or line fouling raising differential pressure (slurry service: polymer/solids build-up)", "Control valves throttling more over time, or recycle/minimum-flow line passing"],
+        "verify": ["Trend motor current/power at constant flow and compare with the pump curve", "Check strainer/filter differential pressure and line fouling indicators", "Check recycle/spillback valve positions and leakage"],
+        "corrective": ["Clean strainers/filters; schedule loop or line cleaning if fouling is confirmed", "Overhaul pump or restore clearances/impeller if worn", "Reopen throttled valves and fix recycle leakage"]
+      },
+      "step": {
+        "likely_causes": ["Additional pump started or standby pump left running in parallel", "Changed operating point (new grade, density, flow target)", "VSD bypassed or fixed at higher speed"],
+        "verify": ["Check pump line-up and running hours per pump", "Confirm VSD status and speed setpoint", "Compare flow and head with the pre-step period"],
+        "corrective": ["Stop the unneeded pump or restore the intended line-up", "Restore VSD control and speed setpoint"]
+      },
+      "spike": {
+        "likely_causes": ["Start-up, flushing or cleaning operation", "Temporary parallel running during maintenance"],
+        "verify": ["Check events log and operating log for that month"],
+        "corrective": ["Log the cause; no equipment action unless it repeats"]
+      },
+      "improvements": {
+        "high_baseload": ["Match pump duty to actual demand: trim impeller or fit VSD where flow is regularly throttled", "Review whether a smaller pump or on/off staging can serve low-load periods"],
+        "weather_sensitive": ["Review fluid temperature/viscosity effects on pumping power"],
+        "bdp_gap": ["Standardize the line-up and valve positions used during the best-performing months"],
+        "always": ["Track pump efficiency against best efficiency point (BEP) at the usual operating point"]
+      }
+    },
+    "compressor": {
+      "label": "Gas compressors (recycle/recovery)",
+      "typical_drivers": ["throughput", "compression ratio", "suction temperature", "recycle/anti-surge flow"],
+      "drift": {
+        "likely_causes": ["Intercooler/aftercooler fouling raising gas temperature and power", "Suction filter or line pressure drop increasing", "Anti-surge/recycle valve passing or partly open", "Valve or seal wear (reciprocating) / internal leakage", "Higher discharge pressure setpoint or downstream pressure drop"],
+        "verify": ["Trend compression ratio, interstage and discharge temperatures", "Check anti-surge/recycle valve position and recycle flow at steady load", "Compute polytropic (or isentropic) efficiency trend", "Check suction filter differential pressure"],
+        "corrective": ["Clean coolers/exchangers; schedule cleaning by measured approach temperature", "Repair or re-stroke the recycle/anti-surge valve; tighten the anti-surge margin if safe", "Overhaul valves/seals as indicated", "Restore pressure setpoints"]
+      },
+      "step": {
+        "likely_causes": ["Anti-surge or recycle valve opened or failed open", "Changed discharge pressure target or process line-up", "Standby unit running with duty unit"],
+        "verify": ["Check recycle flow, valve positions and unit line-up on the step date", "Confirm setpoint history in the control system"],
+        "corrective": ["Close or repair the recycle path", "Restore discharge pressure target and unit line-up"]
+      },
+      "spike": {
+        "likely_causes": ["Start-up/restart, upset or heavy recycle during a disturbance"],
+        "verify": ["Check events log and trip/restart history"],
+        "corrective": ["Log the cause; review start-up practice if it repeats"]
+      },
+      "improvements": {
+        "high_baseload": ["Reduce recycle at low throughput (turndown strategy); review compressor loading steps or speed control"],
+        "weather_sensitive": ["Improve cooling of suction/interstage gas: keep coolers clean and cooling water at design temperature"],
+        "bdp_gap": ["Study operating conditions (pressure ratio, recycle) in the best months and set them as targets"],
+        "always": ["Add online efficiency monitoring (polytropic efficiency vs load)"]
+      }
+    },
+    "extruder": {
+      "label": "Extruder / pelletizer drives",
+      "typical_drivers": ["throughput", "product grade (viscosity)", "melt temperature", "screen pack condition"],
+      "drift": {
+        "likely_causes": ["Screw/barrel wear reducing efficiency", "Screen pack or die plugging raising pressure and power", "Gearbox or lubrication losses"],
+        "verify": ["Compare specific energy (kWh or GJ per ton) by grade at equal throughput", "Trend screen pack differential pressure and melt temperature", "Check gearbox oil condition and temperature"],
+        "corrective": ["Change screens on a measured differential-pressure limit", "Inspect screw/barrel clearances at the next shutdown", "Service gearbox and lubrication"]
+      },
+      "step": {
+        "likely_causes": ["Different product slate (higher viscosity grades)", "Reduced throughput (fixed losses spread over fewer tons)", "Equipment change (screw/die refurbishment) - may be an improvement"],
+        "verify": ["Compare specific energy by grade before/after the step", "Check the events log for equipment changes and trials"],
+        "corrective": ["Set grade-specific energy targets and operating windows", "If the step is downward after an equipment change, confirm and consider re-baselining per procedure"]
+      },
+      "spike": {
+        "likely_causes": ["Grade trial or off-spec run with frequent screen changes", "Restart after a trip/plant outage"],
+        "verify": ["Check the events log and production log for that month"],
+        "corrective": ["Record the trial energy cost; schedule trials with planned start-ups"]
+      },
+      "improvements": {
+        "high_baseload": ["Run at higher throughput and minimize idle/low-rate running; plan campaigns by grade"],
+        "weather_sensitive": ["Review barrel/gearbox cooling for ambient sensitivity"],
+        "bdp_gap": ["Define best-practice setpoints (temperature profile, screw speed) from the best months, per grade"],
+        "always": ["Report specific energy by grade; evaluate high-efficiency motors/drives at next replacement"]
+      }
+    },
+    "steam_dryer": {
+      "label": "Steam-heated dryers / purge columns",
+      "typical_drivers": ["throughput", "powder moisture", "steam pressure", "purge gas flow"],
+      "drift": {
+        "likely_causes": ["Steam trap failures or condensate return degradation", "Insulation damage and heat losses", "Rising purge gas/nitrogen flow or heater fouling"],
+        "verify": ["Run a steam trap survey (ultrasonic/thermographic)", "Check condensate return flow and temperature", "Compare steam per ton of product against the baseline"],
+        "corrective": ["Repair or replace failed traps; restore insulation", "Restore condensate return", "Clean heater surfaces and tune purge flow"]
+      },
+      "step": {
+        "likely_causes": ["Blowing steam trap or leak that started at the step date", "Higher dryer temperature/steam pressure setpoint", "Higher inlet moisture or product change", "Condensate return line lost"],
+        "verify": ["Check what changed on the step date (setpoints, maintenance orders)", "Steam trap survey and condensate return check", "Check inlet moisture and product slate"],
+        "corrective": ["Repair the leak/trap or restore setpoints", "Restore the condensate return line", "Tune dryer temperature to the moisture specification instead of a fixed margin"]
+      },
+      "spike": {
+        "likely_causes": ["Start-up, off-spec reprocessing or abnormal wet product"],
+        "verify": ["Check events log and quality records for that month"],
+        "corrective": ["Log the cause; review start-up steam use"]
+      },
+      "improvements": {
+        "high_baseload": ["Reduce idle steam and purge flow at low throughput; review start-up/stand-by steam use"],
+        "weather_sensitive": ["Review insulation and heat loss at ambient conditions"],
+        "bdp_gap": ["Replicate the best months' dryer temperature and purge setpoints"],
+        "always": ["Install a steam trap management program with a scheduled survey", "Consider heat recovery from dryer vent"]
+      }
+    },
+    "cooling": {
+      "label": "Cooling water pumps and tower fans",
+      "typical_drivers": ["heat load (production)", "ambient wet-bulb/temperature", "pump/fan staging"],
+      "drift": {
+        "likely_causes": ["Fouled heat exchangers raising required flow", "Cooling tower fill/nozzle fouling raising approach temperature", "Fans/pumps running at full speed regardless of load"],
+        "verify": ["Check cooling water supply/return temperature difference and tower approach", "Check fan and pump staging/speed and control mode", "Check exchanger approach temperatures"],
+        "corrective": ["Clean tower fill, nozzles and key exchangers", "Set fan/pump staging to load and ambient", "Fix control loops holding fans at high speed"]
+      },
+      "step": {
+        "likely_causes": ["Extra pump or fan started or control mode changed", "Higher heat load from a process change"],
+        "verify": ["Check pump/fan line-up and control mode history", "Compare process heat load before and after"],
+        "corrective": ["Restore staging and automatic control"]
+      },
+      "spike": {
+        "likely_causes": ["Temporary full-flow operation during maintenance or upset"],
+        "verify": ["Check events log"],
+        "corrective": ["Log the cause"]
+      },
+      "improvements": {
+        "high_baseload": ["Reduce flow where return temperature is below design (low delta-T)"],
+        "weather_sensitive": ["Optimize fan staging against wet-bulb temperature; maintain tower approach"],
+        "bdp_gap": ["Replicate fan/pump control settings from the best months"],
+        "always": ["Evaluate VSDs on fans and pumps; track delta-T and approach monthly"]
+      }
+    },
+    "compressed_air": {
+      "label": "Compressed air system",
+      "typical_drivers": ["air demand (incl. leaks)", "delivery pressure", "compressor sequencing"],
+      "drift": {
+        "likely_causes": ["Growing leakage", "Pressure setpoint raised to compensate for demand or drops", "Filter/dryer pressure drop increasing", "Poor compressor sequencing with unloaded running"],
+        "verify": ["Ultrasonic leak survey; estimate leakage at no-load demand", "Check header pressure and pressure drop across filters and dryers", "Check unloaded run hours and specific power (kW per m3/min)"],
+        "corrective": ["Repair leaks and keep a leak tag log", "Lower the header pressure to the minimum acceptable", "Replace or clean filters and fix dryers", "Optimize sequencing with a master controller"]
+      },
+      "step": {
+        "likely_causes": ["A new consumer or open blow-off/drain", "An additional compressor running or sequencing changed", "Pressure setpoint raised"],
+        "verify": ["Check compressor loading/unloading hours and line-up", "Walk the system for open blow-offs"],
+        "corrective": ["Close inappropriate uses; restore sequencing and setpoints"]
+      },
+      "spike": {
+        "likely_causes": ["Maintenance purge, cleaning or test activity"],
+        "verify": ["Check events log"],
+        "corrective": ["Log the cause"]
+      },
+      "improvements": {
+        "high_baseload": ["Find and fix leaks (often the largest base load); shut down compressors at no demand", "Reduce pressure to the minimum needed"],
+        "weather_sensitive": ["Review intake air temperature and compressor room ventilation"],
+        "bdp_gap": ["Replicate the best months' sequencing and pressure setpoints"],
+        "always": ["Add a VSD trim compressor where load fluctuates; review heat recovery"]
+      }
+    },
+    "boiler": {
+      "label": "Boilers (fuel gas to steam)",
+      "typical_drivers": ["steam demand", "combustion efficiency", "blowdown", "condensate return"],
+      "drift": {
+        "likely_causes": ["Combustion efficiency decline: excess oxygen too high or burner out of tune", "Fouled heat-transfer surfaces (fireside or waterside) raising stack temperature", "Excessive blowdown or lower condensate return", "Steam leaks or failed traps in distribution"],
+        "verify": ["Check flue gas O2/CO and stack temperature trend", "Check blowdown rate vs conductivity limit and condensate return fraction", "Check steam trap and leak survey results"],
+        "corrective": ["Tune burner and O2 trim; clean heat-transfer surfaces", "Optimize blowdown; restore condensate return", "Repair steam leaks and failed traps"]
+      },
+      "step": {
+        "likely_causes": ["Boiler line-up change (additional boiler at low load)", "Burner/controls change or manual mode", "Condensate return lost"],
+        "verify": ["Check which boilers ran and at what load", "Check O2 trim and burner control mode"],
+        "corrective": ["Restore boiler loading strategy and controls"]
+      },
+      "spike": {
+        "likely_causes": ["Start-up, boil-out or hot standby"],
+        "verify": ["Check events log"],
+        "corrective": ["Log the cause"]
+      },
+      "improvements": {
+        "high_baseload": ["Review hot standby and low-load boiler operation; consolidate load on fewer boilers"],
+        "weather_sensitive": ["Review insulation and heat losses"],
+        "bdp_gap": ["Replicate the best months' O2 target and boiler loading"],
+        "always": ["Evaluate economizer and blowdown heat recovery, O2 trim, and condensate return improvement"]
+      }
+    },
+    "chiller": {
+      "label": "Chilled water plant",
+      "typical_drivers": ["cooling load", "condenser water temperature", "chilled water setpoint", "staging"],
+      "drift": {
+        "likely_causes": ["Condenser fouling or high condenser water temperature", "Low chilled-water delta-T with poor staging", "Refrigerant charge or non-condensable issues"],
+        "verify": ["Trend kW per ton of refrigeration vs load", "Check approach temperatures and delta-T", "Check staging logic and part-load operation"],
+        "corrective": ["Clean condenser tubes; restore condenser water temperature control", "Optimize chiller staging", "Check refrigerant charge and purge"]
+      },
+      "step": {
+        "likely_causes": ["Lower chilled-water setpoint or extra chiller running", "Higher load from a process change"],
+        "verify": ["Check setpoint and staging history"],
+        "corrective": ["Restore setpoint and staging"]
+      },
+      "spike": {
+        "likely_causes": ["Start-up or temporary high load"],
+        "verify": ["Check events log"],
+        "corrective": ["Log the cause"]
+      },
+      "improvements": {
+        "high_baseload": ["Review minimum load operation and staging at low demand"],
+        "weather_sensitive": ["Optimize condenser water temperature reset; evaluate free cooling where possible"],
+        "bdp_gap": ["Replicate the best months' setpoints and staging"],
+        "always": ["Evaluate chilled-water temperature reset and VSD chillers/pumps"]
+      }
+    },
+    "hvac": {
+      "label": "HVAC and lighting",
+      "typical_drivers": ["ambient temperature", "operating schedule", "setpoints"],
+      "drift": {
+        "likely_causes": ["Schedule or setpoint drift", "Simultaneous heating and cooling or reheat", "Dirty filters/coils reducing efficiency", "Lighting left on outside working hours"],
+        "verify": ["Check BMS schedules and setpoints", "Check filters and coils", "Night-time walk-through for lighting and equipment left on"],
+        "corrective": ["Restore schedules and setpoints", "Clean filters and coils", "Add occupancy/time controls"]
+      },
+      "step": {
+        "likely_causes": ["Schedule or setpoint change", "New area or equipment added"],
+        "verify": ["Check BMS change log"],
+        "corrective": ["Restore schedule/setpoints or document the new load"]
+      },
+      "spike": {
+        "likely_causes": ["Event, commissioning or temporary conditions"],
+        "verify": ["Check events log"],
+        "corrective": ["Log the cause"]
+      },
+      "improvements": {
+        "high_baseload": ["Reduce out-of-hours load with schedules and occupancy controls"],
+        "weather_sensitive": ["Optimize cooling setpoints; improve envelope/solar control"],
+        "bdp_gap": ["Replicate the best months' schedules and setpoints"],
+        "always": ["LED lighting with controls; BMS optimization"]
+      }
+    },
+    "process_heating": {
+      "label": "Gas-fired process heating / hot-air dryers",
+      "typical_drivers": ["throughput", "moisture load", "exhaust temperature", "air recirculation"],
+      "drift": {
+        "likely_causes": ["Burner out of tune or high excess air", "Door/seal leakage and insulation losses", "Higher exhaust temperature or reduced hot-air recirculation", "Rising moisture load in the product"],
+        "verify": ["Check exhaust O2 and temperature", "Check seals, insulation and air balance", "Compare energy per kg of water removed"],
+        "corrective": ["Tune burner and excess air", "Repair seals and insulation", "Restore recirculation and air balance"]
+      },
+      "step": {
+        "likely_causes": ["Temperature setpoint raised or product change", "Recirculation damper or burner control change"],
+        "verify": ["Check setpoint history and recent maintenance"],
+        "corrective": ["Restore setpoints and damper positions"]
+      },
+      "spike": {
+        "likely_causes": ["Start-up or product changeover"],
+        "verify": ["Check events log"],
+        "corrective": ["Log the cause"]
+      },
+      "improvements": {
+        "high_baseload": ["Reduce idle heating between batches or lines; improve start-up scheduling"],
+        "weather_sensitive": ["Review insulation and intake air conditions"],
+        "bdp_gap": ["Replicate the best months' temperature and air settings"],
+        "always": ["Evaluate exhaust heat recovery and moisture-based control of drying"]
+      }
+    }
+  },
+  "verdict_notes": {
+    "activity_driven": "Energy per ton is higher, but total energy follows the baseline model for the actual production and weather. This is mostly a load effect (fixed energy spread over fewer tons), not equipment deterioration. Do not chase equipment faults; look at reducing fixed/base load at low throughput and at production scheduling.",
+    "improvement": "Energy is persistently below the baseline model. Confirm the cause (equipment change, practice change, or meter/data issue), document it, and consider re-baselining only through the controlled procedure.",
+    "normal": "Within the deviation band. Keep monitoring."
+  }
+}

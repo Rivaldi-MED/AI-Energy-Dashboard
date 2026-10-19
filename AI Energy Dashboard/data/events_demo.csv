@@ -1,0 +1,5 @@
+plant,seu,start,end,event_type,description
+PLANT_B,*,2026-01-01,2026-03-31,production_turndown,Feed constraint - plant rate reduced to ~70% (SYNTHETIC)
+PLANT_A,extruder,2026-04-01,2026-04-30,grade_trial,Trial of high-viscosity grade with repeated screen pack changes (SYNTHETIC)
+PLANT_C,extruder_lines,2026-04-01,2026-04-30,equipment_change,Screw/gearbox refurbishment and new die plate installed (SYNTHETIC)
+PLANT_B,chiller,2024-08-01,2024-09-30,meter_outage,Energy meter communication outage - data missing (SYNTHETIC)

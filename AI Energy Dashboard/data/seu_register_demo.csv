@@ -1,0 +1,15 @@
+plant,plant_name,seu,seu_name,seu_type,carrier,metering,notes
+PLANT_A,Plant A - HDPE,reactor_loop,Loop reactor circulation pumps,pump,electricity,sub-metered,synthetic demo data
+PLANT_A,Plant A - HDPE,recovery_comp,Recovery / recycle compressor,compressor,electricity,sub-metered,synthetic demo data
+PLANT_A,Plant A - HDPE,extruder,Pelletizing extruder drive,extruder,electricity,sub-metered,synthetic demo data
+PLANT_A,Plant A - HDPE,dryer_steam,Powder dryer / purge steam,steam_dryer,steam,sub-metered,synthetic demo data
+PLANT_A,Plant A - HDPE,cooling_water,Cooling water pumps + fans,cooling,electricity,sub-metered,synthetic demo data
+PLANT_B,Plant B - PP,compressed_air,Compressed air system,compressed_air,electricity,sub-metered,synthetic demo data
+PLANT_B,Plant B - PP,boiler_fuel,Steam boiler fuel gas,boiler,fuel_gas,sub-metered,synthetic demo data
+PLANT_B,Plant B - PP,chiller,Chilled water plant,chiller,electricity,sub-metered,synthetic demo data
+PLANT_B,Plant B - PP,process_pumps,Process pumps,pump,electricity,sub-metered,synthetic demo data
+PLANT_C,Plant C - Compounding,extruder_lines,Compounding extruder lines,extruder,electricity,sub-metered,synthetic demo data
+PLANT_C,Plant C - Compounding,cooling_water,Cooling water pumps + fans,cooling,electricity,sub-metered,synthetic demo data
+PLANT_C,Plant C - Compounding,hvac_lighting,HVAC and lighting,hvac,electricity,sub-metered,synthetic demo data
+PLANT_C,Plant C - Compounding,dryers_hot_air,Hot-air dryers (gas fired),process_heating,fuel_gas,sub-metered,synthetic demo data
+PLANT_C,Plant C - Compounding,air_compressors,Air compressors,compressed_air,electricity,sub-metered,synthetic demo data

@@ -1,0 +1,8 @@
+# UNTESTED (see Dockerfile). Usage: docker compose up --build   then open http://localhost:8888
+services:
+  energy-notebook:
+    build: .
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/work

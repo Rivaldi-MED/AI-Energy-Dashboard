@@ -1,0 +1,88 @@
+{
+  "note": "Planted stories in the SYNTHETIC demo data. Baseline = first 24 months (2023-10..2025-09).",
+  "stories": [
+    {
+      "plant": "PLANT_A",
+      "seu": "recovery_comp",
+      "story": "drift",
+      "magnitude": 0.005,
+      "start_or_month_index": 24,
+      "start_or_month": "2025-10-01"
+    },
+    {
+      "plant": "PLANT_A",
+      "seu": "extruder",
+      "story": "spike",
+      "magnitude": 0.25,
+      "start_or_month_index": 30,
+      "start_or_month": "2026-04-01"
+    },
+    {
+      "plant": "PLANT_A",
+      "seu": "dryer_steam",
+      "story": "step",
+      "magnitude": 0.08,
+      "start_or_month_index": 28,
+      "start_or_month": "2026-02-01"
+    },
+    {
+      "plant": "PLANT_B",
+      "seu": "boiler_fuel",
+      "story": "drift",
+      "magnitude": 0.0035,
+      "start_or_month_index": 24,
+      "start_or_month": "2025-10-01"
+    },
+    {
+      "plant": "PLANT_C",
+      "seu": "extruder_lines",
+      "story": "step",
+      "magnitude": -0.06,
+      "start_or_month_index": 30,
+      "start_or_month": "2026-04-01"
+    },
+    {
+      "plant": "PLANT_C",
+      "seu": "dryers_hot_air",
+      "story": "drift",
+      "magnitude": 0.0045,
+      "start_or_month_index": 24,
+      "start_or_month": "2025-10-01"
+    },
+    {
+      "plant": "PLANT_C",
+      "seu": "air_compressors",
+      "story": "step",
+      "magnitude": 0.04,
+      "start_or_month_index": 32,
+      "start_or_month": "2026-06-01"
+    },
+    {
+      "plant": "PLANT_B",
+      "seu": "(all)",
+      "story": "production_turndown",
+      "magnitude": -0.3,
+      "start_or_month_index": 27,
+      "start_or_month": "2026-01-01..2026-03-01",
+      "note": "SEC rises but energy tracks the model: NOT a performance problem"
+    },
+    {
+      "plant": "PLANT_B",
+      "seu": "compressed_air",
+      "story": "high_base_load",
+      "magnitude": null,
+      "start_or_month_index": null,
+      "start_or_month": null,
+      "note": "intercept ~83% of energy at mean load"
+    },
+    {
+      "plant": "PLANT_C",
+      "seu": "hvac_lighting",
+      "story": "no_production_driver",
+      "magnitude": null,
+      "start_or_month_index": null,
+      "start_or_month": null,
+      "note": "b=0 -> production should be dropped from model"
+    }
+  ]
+}
