@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    font-feature-settings: "tnum" 1, "cv02" 1, "cv03" 1, "cv04" 1;
+  }
+}
+
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .card-print {
+    break-inside: avoid;
+    box-shadow: none !important;
+    border: 1px solid #d4d4d8 !important;
+  }
+}

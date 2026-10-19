@@ -1,0 +1,6 @@
+{
+  "name": "ISO 50001 Energy Performance Dashboard",
+  "description": "Industrial energy performance monitoring, EnPI regression tracking, and SEU diagnostics dashboard for petrochemical and manufacturing plants.",
+  "permissions": [],
+  "capabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
